@@ -15,16 +15,11 @@ import HitsWithContent from './components/HitsWithContent';
 
 const algoliaAppId = import.meta.env.VITE_ALGOLIA_ID;
 const algoliaSearchKey = import.meta.env.VITE_ALGOLIA_SEARCH_KEY;
-const searchClient = algoliasearch(
-  // 'B1G2GM9NG0',
-  algoliaAppId,
-  algoliaSearchKey
-);
+const searchClient = algoliasearch(algoliaAppId, algoliaSearchKey);
 
 function App() {
   return (
     <div className='container'>
-      {/* <HitsWithComponent /> */}
       <InstantSearch
         searchClient={searchClient}
         indexName='demo_ecommerce'
@@ -45,7 +40,6 @@ function App() {
               ]}
             />
             <HitsWithContent />
-            {/* <Hits hitComponent={Hit} /> */}
             <div className='pagination'>
               <Pagination />
             </div>
