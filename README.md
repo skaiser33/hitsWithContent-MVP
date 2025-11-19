@@ -2,7 +2,7 @@
 
 ## Get started
 
-Create a .env file and populate the two variables with your app ID and searh-only API key
+Create a .env file and populate the two variables with your app ID and search-only API key
 
 ```sh
 VITE_ALGOLIA_ID=
