@@ -22,7 +22,7 @@ function App() {
     <div className='container'>
       <InstantSearch
         searchClient={searchClient}
-        indexName='test-1'
+        indexName='demo_ecommerce'
         insights={true}
       >
         <Configure hitsPerPage={20} />
