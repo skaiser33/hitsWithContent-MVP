@@ -1,9 +1,7 @@
 import {
-  Hits,
   useHits,
   usePagination,
-  useInstantSearch,
-  HitsPerPage,
+  useInstantSearch
 } from 'react-instantsearch';
 
 import Hit from './Hit';
@@ -15,7 +13,7 @@ export default function HitsWithContent() {
   const { uiState } = useInstantSearch(); // available if you want to inspect hitsPerPage, etc.a
 
   const insertionAfter = new Set([5, 10, 15]); // 1-based positions
-  const interleaved = [];
+  const interleaved: React.ReactNode[] = [];
 
   hits.forEach((hit, idx) => {
     interleaved.push(
@@ -44,11 +42,8 @@ export default function HitsWithContent() {
   return (
     <>
       <div className='ais-Hits'>
-        {/* <ul className='ais-Hits-list grid gap-4'>{interleaved}</ul> */}
         <ul className='ais-Hits-list'>{interleaved}</ul>
       </div>
-
-      {/* <Hits hitComponent={Hit} /> */}
     </>
   );
 }

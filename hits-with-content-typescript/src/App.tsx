@@ -1,7 +1,6 @@
 import {
   Configure,
   Highlight,
-  Hits,
   HitsPerPage,
   InstantSearch,
   Pagination,
@@ -9,6 +8,7 @@ import {
   SearchBox,
 } from 'react-instantsearch';
 import algoliasearch from 'algoliasearch/lite';
+import 'instantsearch.css/themes/satellite.css';
 
 import './App.css';
 import HitsWithContent from './components/HitsWithContent';
@@ -46,30 +46,6 @@ function App() {
           </div>
         </div>
       </InstantSearch>
-    </div>
-  );
-}
-
-function Hit({ hit, sendEvent }) {
-  return (
-    <div>
-      <Highlight attribute='name' hit={hit} />
-      <button
-        type='button'
-        onClick={() => {
-          sendEvent('click', hit, 'Product Added');
-        }}
-      >
-        Add to cart
-      </button>
-      <button
-        type='button'
-        onClick={() => {
-          sendEvent('conversion', hit, 'Product Ordered');
-        }}
-      >
-        Order
-      </button>
     </div>
   );
 }
