@@ -7,12 +7,17 @@ import {
 import Hit from './Hit';
 import Banner from './Banner';
 
-export default function HitsWithContent() {
+type HitsWithContentProps = {
+  contentTemplate: React.ReactNode;
+  positions: readonly number[];
+};
+
+export default function HitsWithContent({contentTemplate, positions}: HitsWithContentProps) {
   const { hits } = useHits();
   const { currentRefinement: currentPage } = usePagination();
   const { uiState } = useInstantSearch(); // available if you want to inspect hitsPerPage, etc.a
 
-  const insertionAfter = new Set([5, 10, 15]); // 1-based positions
+  const insertionAfter = new Set(positions); // 1-based positions
   const interleaved: React.ReactNode[] = [];
 
   hits.forEach((hit, idx) => {
@@ -30,10 +35,7 @@ export default function HitsWithContent() {
       interleaved.push(
         <li key={bannerKey} className='ais-Hits-item'>
           <Banner id={bannerId}>
-            <div className=' text-sm'>
-              <strong>Sponsored</strong> · Banner {bannerId} (after result{' '}
-              {position})
-            </div>
+            {contentTemplate}
           </Banner>
         </li>
       );
