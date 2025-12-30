@@ -12,10 +12,19 @@ import 'instantsearch.css/themes/satellite.css';
 
 import './App.css';
 import HitsWithContent from './components/HitsWithContent';
+import type React from 'react';
 
-const algoliaAppId = import.meta.env.VITE_ALGOLIA_ID;
-const algoliaSearchKey = import.meta.env.VITE_ALGOLIA_SEARCH_KEY;
+const algoliaAppId: string = import.meta.env.VITE_ALGOLIA_ID;
+const algoliaSearchKey: string = import.meta.env.VITE_ALGOLIA_SEARCH_KEY;
 const searchClient = algoliasearch(algoliaAppId, algoliaSearchKey);
+
+const contentTemplate: React.ReactNode = (
+  <div className=' text-sm'>
+    <strong>Sponsored</strong> Banner
+  </div>
+)
+
+const positions: readonly number[] = [5, 10, 15];
 
 function App() {
   return (
@@ -39,7 +48,7 @@ function App() {
                 { label: '40 per page', value: 40 },
               ]}
             />
-            <HitsWithContent />
+            <HitsWithContent contentTemplate={contentTemplate} positions={positions} />
             <div className='pagination'>
               <Pagination />
             </div>
