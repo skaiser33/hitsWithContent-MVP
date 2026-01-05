@@ -25,7 +25,7 @@ const contentTemplate: React.ReactNode = (
   </div>
 );
 
-const positions: readonly number[] = [5, 10, 15];
+const positions: readonly number[] = [0, 10, 15];
 
 function App() {
   return (
