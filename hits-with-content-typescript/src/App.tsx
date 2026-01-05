@@ -19,10 +19,11 @@ const algoliaSearchKey: string = import.meta.env.VITE_ALGOLIA_SEARCH_KEY;
 const searchClient = algoliasearch(algoliaAppId, algoliaSearchKey);
 
 const contentTemplate: React.ReactNode = (
-  <div className=' text-sm'>
+  <div className='text-sm'>
     <strong>Sponsored</strong> Banner
+    {/* <img src={'../../../images/test-image-a.png'} /> */}
   </div>
-)
+);
 
 const positions: readonly number[] = [5, 10, 15];
 
@@ -48,7 +49,10 @@ function App() {
                 { label: '40 per page', value: 40 },
               ]}
             />
-            <HitsWithContent contentTemplate={contentTemplate} positions={positions} />
+            <HitsWithContent
+              contentTemplate={contentTemplate}
+              positions={positions}
+            />
             <div className='pagination'>
               <Pagination />
             </div>
