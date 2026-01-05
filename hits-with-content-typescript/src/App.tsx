@@ -1,6 +1,5 @@
 import {
   Configure,
-  Highlight,
   HitsPerPage,
   InstantSearch,
   Pagination,
