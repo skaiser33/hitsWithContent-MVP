@@ -1,8 +1,4 @@
-import {
-  useHits,
-  usePagination,
-  useInstantSearch
-} from 'react-instantsearch';
+import { useHits, usePagination, useInstantSearch } from 'react-instantsearch';
 
 import Hit from './Hit';
 import Banner from './Banner';
@@ -12,14 +8,28 @@ type HitsWithContentProps = {
   positions: readonly number[];
 };
 
-export default function HitsWithContent({contentTemplate, positions}: HitsWithContentProps) {
+export default function HitsWithContent({
+  contentTemplate,
+  positions,
+}: HitsWithContentProps) {
   const { hits } = useHits();
   const { currentRefinement: currentPage } = usePagination();
-  const { uiState } = useInstantSearch(); // available if you want to inspect hitsPerPage, etc.a
+  const { uiState } = useInstantSearch(); // available if you want to inspect hitsPerPage, etc.
 
   const insertionAfter = new Set(positions); // 1-based positions
   const interleaved: React.ReactNode[] = [];
 
+  // handles edge case where positions contains a 0
+  if (insertionAfter.has(0)) {
+    const bannerKey = `banner-p${currentPage}-pos${0}`;
+    const bannerId = '0';
+
+    interleaved.push(
+      <li key={bannerKey} className='ais-Hits-item'>
+        <Banner id={bannerId}>{contentTemplate}</Banner>
+      </li>
+    );
+  }
   hits.forEach((hit, idx) => {
     interleaved.push(
       <li key={hit.objectID} className='ais-Hits-item'>
@@ -34,9 +44,7 @@ export default function HitsWithContent({contentTemplate, positions}: HitsWithCo
 
       interleaved.push(
         <li key={bannerKey} className='ais-Hits-item'>
-          <Banner id={bannerId}>
-            {contentTemplate}
-          </Banner>
+          <Banner id={bannerId}>{contentTemplate}</Banner>
         </li>
       );
     }
