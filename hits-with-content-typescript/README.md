@@ -40,15 +40,15 @@ export default defineConfig([
       // other options...
     },
   },
-])
+]);
 ```
 
 You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
 
 ```js
 // eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+import reactX from 'eslint-plugin-react-x';
+import reactDom from 'eslint-plugin-react-dom';
 
 export default defineConfig([
   globalIgnores(['dist']),
@@ -69,5 +69,43 @@ export default defineConfig([
       // other options...
     },
   },
-])
+]);
 ```
+
+---
+
+# HitsWithContent POC
+
+## Get started
+
+Create a .env file and populate the two variables with your app ID and search-only API key
+
+```sh
+VITE_ALGOLIA_ID=
+VITE_ALGOLIA_SEARCH_KEY=
+```
+
+In the `src/App.tsx` file, you will then need to change:
+
+- the `indexName` value in the `<InstantSearch/>` widget to reflect the name of your own index
+- the `attribute` value in the `<RefinementList/>` widget to reflet the name of one of your index's attributes for faceting
+
+Lastly, in `src/components/Hit.tsx`, you will need to modify any referenced attributes to reflect your own index's record structure.
+
+---
+
+To run this project locally, install the dependencies and run the local server:
+
+```sh
+npm install
+npm start
+```
+
+Alternatively, you may use [Yarn](https://http://yarnpkg.com/):
+
+```sh
+yarn
+yarn start
+```
+
+Open http://localhost:5173 to see your app.
