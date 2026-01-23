@@ -4,17 +4,37 @@ import Hit from './Hit';
 import Banner from './Banner';
 
 type HitsWithContentProps = {
-  contentTemplate: React.ReactNode;
+  // contentTemplate: React.ReactNode;
   positions: readonly number[];
 };
 
 export default function HitsWithContent({
-  contentTemplate,
+  // contentTemplate,
   positions,
 }: HitsWithContentProps) {
   const { hits } = useHits();
   const { currentRefinement: currentPage } = usePagination();
-  const { uiState } = useInstantSearch(); // available if you want to inspect hitsPerPage, etc.
+  const { uiState, indexUiState } = useInstantSearch(); // uiState available if you want to inspect hitsPerPage, etc.
+
+  const userQuery: string = (indexUiState.query ?? '').toLowerCase();
+  const bannerWords: string[] = ['iPhone', 'Samsung', 'Default'];
+  let bannerWord: number;
+
+  if (userQuery == 'iphone') {
+    bannerWord = 0;
+  } else if (userQuery == 'samsung') {
+    bannerWord = 1;
+  } else {
+    bannerWord = 2;
+  }
+
+  const contentTemplate: React.ReactNode = (
+    <div className='text-sm'>
+      <strong>Sponsored</strong> Banner for{' '}
+      <strong>{bannerWords[bannerWord]}</strong> Query
+      {/* <img src={'../../../images/test-image-a.png'} /> */}
+    </div>
+  );
 
   const insertionAfter = new Set(positions); // 1-based positions
   const interleaved: React.ReactNode[] = [];

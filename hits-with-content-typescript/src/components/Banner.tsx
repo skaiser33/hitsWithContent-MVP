@@ -1,7 +1,7 @@
 type BannerProps = {
   id: string;
   children: React.ReactNode;
-}
+};
 
 export default function Banner({ id, children }: BannerProps) {
   return (

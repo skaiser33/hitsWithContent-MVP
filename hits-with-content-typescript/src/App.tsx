@@ -11,18 +11,10 @@ import 'instantsearch.css/themes/satellite.css';
 
 import './App.css';
 import HitsWithContent from './components/HitsWithContent';
-import type React from 'react';
 
 const algoliaAppId: string = import.meta.env.VITE_ALGOLIA_ID;
 const algoliaSearchKey: string = import.meta.env.VITE_ALGOLIA_SEARCH_KEY;
 const searchClient = algoliasearch(algoliaAppId, algoliaSearchKey);
-
-const contentTemplate: React.ReactNode = (
-  <div className='text-sm'>
-    <strong>Sponsored</strong> Banner
-    {/* <img src={'../../../images/test-image-a.png'} /> */}
-  </div>
-);
 
 const positions: readonly number[] = [0, 10, 15];
 
@@ -49,7 +41,7 @@ function App() {
               ]}
             />
             <HitsWithContent
-              contentTemplate={contentTemplate}
+              // contentTemplate={contentTemplate}
               positions={positions}
             />
             <div className='pagination'>
