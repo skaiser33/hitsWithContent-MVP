@@ -20,16 +20,50 @@ export default function HitsWithContent({
   const userQuery: string = (indexUiState.query ?? '').toLowerCase();
 
   // INJECTION OBJECT - to be refactored as prop
-  const injectionObject = { iphone: 'iPhone', samsung: 'Samsung', tv: 'TV' };
+  // const injectionObject = {
+  //   iphone: { bannerWord: 'iPhone' },
+  //   samsung: { bannerWord: 'Samsung' },
+  //   tv: { bannerWord: 'TV' },
+  // };
+  const injectionObject: Record<
+    string,
+    {
+      position: number;
+      imageUrl: string;
+      clickUrl: string;
+      bannerWord: string;
+    }[]
+  > = {
+    iphone: [
+      {
+        position: 2,
+        imageUrl: '../../../images/test-image-a.png',
+        clickUrl: 'https://www.algolia.com/',
+        bannerWord: 'iPhone',
+      },
+    ],
+    samsung: [
+      {
+        position: 2,
+        imageUrl: '../../../images/test-image-b.png',
+        clickUrl: 'https://www.google.com/',
+        bannerWord: 'Samsung',
+      },
+    ],
+  };
+
+  // console.log(
+  //   'inectionObject test--->',
+  //   injectionObject['samsung'][0].bannerWord
+  // );
 
   const contentTemplate: React.ReactNode = (
-    <div className='text-sm'>
-      <strong>Sponsored</strong> Banner for{' '}
+    <div>
+      Banner_for_
       <strong>
-        {injectionObject[userQuery as keyof typeof injectionObject] ??
-          'Default'}
+        {injectionObject[userQuery as keyof typeof injectionObject]?.[0]
+          ?.bannerWord ?? 'Default'}
       </strong>{' '}
-      Query
       {/* <img src={'../../../images/test-image-a.png'} /> */}
     </div>
   );
