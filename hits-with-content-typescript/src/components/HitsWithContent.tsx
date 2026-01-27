@@ -19,31 +19,15 @@ export default function HitsWithContent({
   // ***QUERY MATCHING WITHOUT RULES***
   const userQuery: string = (indexUiState.query ?? '').toLowerCase();
 
-  // TO DELETE: ARRAY APPROACH
-  const bannerWords: string[] = ['iPhone', 'Samsung', 'Default'];
-  let bannerWord: number;
-
-  if (userQuery == 'iphone') {
-    bannerWord = 0;
-  } else if (userQuery == 'samsung') {
-    bannerWord = 1;
-  } else {
-    bannerWord = 2;
-  }
-
-  // OBJECT APPROACH - to be revised as prop
-  const injectionObject = { iphone: 0, samsung: 1 };
+  // INJECTION OBJECT - to be refactored as prop
+  const injectionObject = { iphone: 'iPhone', samsung: 'Samsung', tv: 'TV' };
 
   const contentTemplate: React.ReactNode = (
     <div className='text-sm'>
       <strong>Sponsored</strong> Banner for{' '}
-      {/* <strong>{bannerWords[bannerWord]}</strong> Query */}
       <strong>
-        {
-          bannerWords[
-            injectionObject[userQuery as keyof typeof injectionObject] ?? 2
-          ]
-        }
+        {injectionObject[userQuery as keyof typeof injectionObject] ??
+          'Default'}
       </strong>{' '}
       Query
       {/* <img src={'../../../images/test-image-a.png'} /> */}
