@@ -16,7 +16,10 @@ export default function HitsWithContent({
   const { currentRefinement: currentPage } = usePagination();
   const { uiState, indexUiState } = useInstantSearch(); // uiState available if you want to inspect hitsPerPage, etc.
 
+  // ***QUERY MATCHING WITHOUT RULES***
   const userQuery: string = (indexUiState.query ?? '').toLowerCase();
+
+  // TO DELETE: ARRAY APPROACH
   const bannerWords: string[] = ['iPhone', 'Samsung', 'Default'];
   let bannerWord: number;
 
@@ -28,13 +31,26 @@ export default function HitsWithContent({
     bannerWord = 2;
   }
 
+  // OBJECT APPROACH - to be revised as prop
+  const injectionObject = { iphone: 0, samsung: 1 };
+
   const contentTemplate: React.ReactNode = (
     <div className='text-sm'>
       <strong>Sponsored</strong> Banner for{' '}
-      <strong>{bannerWords[bannerWord]}</strong> Query
+      {/* <strong>{bannerWords[bannerWord]}</strong> Query */}
+      <strong>
+        {
+          bannerWords[
+            injectionObject[userQuery as keyof typeof injectionObject] ?? 2
+          ]
+        }
+      </strong>{' '}
+      Query
       {/* <img src={'../../../images/test-image-a.png'} /> */}
     </div>
   );
+  console.log('uiState', uiState);
+  console.log('index,UiState', indexUiState);
 
   const insertionAfter = new Set(positions); // 1-based positions
   const interleaved: React.ReactNode[] = [];
