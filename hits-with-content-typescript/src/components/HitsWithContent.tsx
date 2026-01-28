@@ -71,11 +71,17 @@ export default function HitsWithContent({
     ],
   };
 
-  const positionsArray =
-    injectionObject[userQuery as keyof typeof injectionObject]?.map(
-      (item) => item.position
-    ) ?? [];
-  console.log('positionsArray', positionsArray);
+  // const positionsArray =
+  //   injectionObject[userQuery as keyof typeof injectionObject]?.map(
+  //     (item) => item.position
+  //   ) ?? [];
+  const positionsArray = injectionObject[
+    userQuery as keyof typeof injectionObject
+  ]
+    ? injectionObject[userQuery as keyof typeof injectionObject].map(
+        (item) => item.position
+      )
+    : injectionObject['default'].map((item) => item.position) ?? [];
 
   const contentTemplate: React.ReactNode = (
     <div>
@@ -84,7 +90,7 @@ export default function HitsWithContent({
         {injectionObject[userQuery as keyof typeof injectionObject]?.[0]
           ?.bannerWord ?? injectionObject['default']?.[0]?.bannerWord}
       </strong>{' '}
-      {/* <img src={'../../../images/test-image-a.png'} /> */}
+      <img src={'../../../images/test-image-a.png'} />
     </div>
   );
   // console.log('uiState', uiState);
