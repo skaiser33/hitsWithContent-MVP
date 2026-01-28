@@ -52,6 +52,13 @@ export default function HitsWithContent({
         targetUrl: 'https://www.algolia.com/',
         bannerWord: 'iPhone',
       },
+      {
+        key: 'iphone-02',
+        position: 3,
+        imageUrl: '../../../images/test-image-b.png',
+        targetUrl: 'https://www.algolia.com/',
+        bannerWord: 'More iPhone',
+      },
     ],
     samsung: [
       {
@@ -64,22 +71,27 @@ export default function HitsWithContent({
     ],
   };
 
+  const positionsArray =
+    injectionObject[userQuery as keyof typeof injectionObject]?.map(
+      (item) => item.position
+    ) ?? [];
+  console.log('positionsArray', positionsArray);
+
   const contentTemplate: React.ReactNode = (
     <div>
       Banner_for_
       <strong>
         {injectionObject[userQuery as keyof typeof injectionObject]?.[0]
-          ?.bannerWord ??
-          injectionObject['default' as keyof typeof injectionObject]?.[0]
-            ?.bannerWord}
+          ?.bannerWord ?? injectionObject['default']?.[0]?.bannerWord}
       </strong>{' '}
       {/* <img src={'../../../images/test-image-a.png'} /> */}
     </div>
   );
-  console.log('uiState', uiState);
-  console.log('index,UiState', indexUiState);
+  // console.log('uiState', uiState);
+  // console.log('index,UiState', indexUiState);
 
-  const insertionAfter = new Set(positions); // 1-based positions
+  // const insertionAfter = new Set(positions);
+  const insertionAfter = new Set(positionsArray); // 1-based positions
   const interleaved: React.ReactNode[] = [];
 
   // handles edge case where positions contains a 0
