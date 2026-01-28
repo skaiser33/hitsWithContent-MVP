@@ -28,41 +28,50 @@ export default function HitsWithContent({
   const injectionObject: Record<
     string,
     {
+      key: string;
       position: number;
       imageUrl: string;
-      clickUrl: string;
+      targetUrl: string;
       bannerWord: string;
     }[]
   > = {
+    default: [
+      {
+        key: 'default-01',
+        position: 3,
+        imageUrl: '../../../images/test-image-a.png',
+        targetUrl: 'https://www.algolia.com/',
+        bannerWord: 'default',
+      },
+    ],
     iphone: [
       {
+        key: 'iphone-01',
         position: 2,
         imageUrl: '../../../images/test-image-a.png',
-        clickUrl: 'https://www.algolia.com/',
+        targetUrl: 'https://www.algolia.com/',
         bannerWord: 'iPhone',
       },
     ],
     samsung: [
       {
-        position: 2,
+        key: 'samsung-01',
+        position: 4,
         imageUrl: '../../../images/test-image-b.png',
-        clickUrl: 'https://www.google.com/',
+        targetUrl: 'https://www.google.com/',
         bannerWord: 'Samsung',
       },
     ],
   };
-
-  // console.log(
-  //   'inectionObject test--->',
-  //   injectionObject['samsung'][0].bannerWord
-  // );
 
   const contentTemplate: React.ReactNode = (
     <div>
       Banner_for_
       <strong>
         {injectionObject[userQuery as keyof typeof injectionObject]?.[0]
-          ?.bannerWord ?? 'Default'}
+          ?.bannerWord ??
+          injectionObject['default' as keyof typeof injectionObject]?.[0]
+            ?.bannerWord}
       </strong>{' '}
       {/* <img src={'../../../images/test-image-a.png'} /> */}
     </div>
