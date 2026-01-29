@@ -71,10 +71,6 @@ export default function HitsWithContent({
     ],
   };
 
-  // const positionsArray =
-  //   injectionObject[userQuery as keyof typeof injectionObject]?.map(
-  //     (item) => item.position
-  //   ) ?? [];
   const positionsArray = injectionObject[
     userQuery as keyof typeof injectionObject
   ]
@@ -83,16 +79,50 @@ export default function HitsWithContent({
       )
     : injectionObject['default'].map((item) => item.position) ?? [];
 
-  const contentTemplate: React.ReactNode = (
-    <div>
-      Banner_for_
-      <strong>
-        {injectionObject[userQuery as keyof typeof injectionObject]?.[0]
-          ?.bannerWord ?? injectionObject['default']?.[0]?.bannerWord}
-      </strong>{' '}
-      <img src={'../../../images/test-image-a.png'} />
-    </div>
-  );
+  // const contentArray = injectionObject[
+  //   userQuery as keyof typeof injectionObject
+  // ]
+  //   ? injectionObject[userQuery as keyof typeof injectionObject].map(
+  //       (item) => ({ imageUrl: item.imageUrl })
+  //     )
+  //   : injectionObject['default'].map((item) => ({ imageUrl: item.imageUrl })) ??
+  //     [];
+  const contentArray = injectionObject[
+    userQuery as keyof typeof injectionObject
+  ]
+    ? injectionObject[userQuery as keyof typeof injectionObject].map((item) => (
+        <div>
+          Banner_for_
+          <strong>{item.bannerWord}</strong>{' '}
+          <a href={item.targetUrl} rel='noopener noreferrer'>
+            <img src={item.imageUrl} />
+          </a>
+        </div>
+      ))
+    : injectionObject['default'].map((item) => (
+        <div>
+          Banner_for_
+          <strong>{item.bannerWord}</strong>{' '}
+          <a href={item.targetUrl} rel='noopener noreferrer'>
+            <img src={item.imageUrl} />
+          </a>
+        </div>
+      )) ?? [];
+
+  console.log('contentArray', contentArray);
+
+  // const contentTemplate: React.ReactNode = (
+  //   <div>
+  //     Banner_for_
+  //     <strong>
+  //       {injectionObject[userQuery as keyof typeof injectionObject]?.[0]
+  //         ?.bannerWord ?? injectionObject['default']?.[0]?.bannerWord}
+  //     </strong>{' '}
+  //     <a href='https://example.com' rel='noopener noreferrer'>
+  //       <img src={'../../../images/test-image-a.png'} />
+  //     </a>
+  //   </div>
+  // );
   // console.log('uiState', uiState);
   // console.log('index,UiState', indexUiState);
 
@@ -107,7 +137,8 @@ export default function HitsWithContent({
 
     interleaved.push(
       <li key={bannerKey} className='ais-Hits-item'>
-        <Banner id={bannerId}>{contentTemplate}</Banner>
+        {/* <Banner id={bannerId}>{contentTemplate}</Banner> */}
+        <Banner id={bannerId}>{contentArray.shift()}</Banner>
       </li>
     );
   }
@@ -125,7 +156,7 @@ export default function HitsWithContent({
 
       interleaved.push(
         <li key={bannerKey} className='ais-Hits-item'>
-          <Banner id={bannerId}>{contentTemplate}</Banner>
+          <Banner id={bannerId}>{contentArray.shift()}</Banner>
         </li>
       );
     }
