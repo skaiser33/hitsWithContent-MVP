@@ -8,10 +8,9 @@ type HitsWithContentProps = {
   positions: readonly number[];
 };
 
-export default function HitsWithContent({
-  // contentTemplate,
-  positions,
-}: HitsWithContentProps) {
+export default function HitsWithContent({}: // contentTemplate,
+// positions,
+HitsWithContentProps) {
   const { hits } = useHits();
   const { currentRefinement: currentPage } = usePagination();
   const { uiState, indexUiState } = useInstantSearch(); // uiState available if you want to inspect hitsPerPage, etc.
@@ -47,14 +46,14 @@ export default function HitsWithContent({
     iphone: [
       {
         key: 'iphone-01',
-        position: 2,
+        position: 3,
         imageUrl: '../../../images/test-image-a.png',
         targetUrl: 'https://www.algolia.com/',
         bannerWord: 'iPhone',
       },
       {
         key: 'iphone-02',
-        position: 3,
+        position: 2,
         imageUrl: '../../../images/test-image-b.png',
         targetUrl: 'https://www.algolia.com/',
         bannerWord: 'More iPhone',
@@ -71,14 +70,65 @@ export default function HitsWithContent({
     ],
   };
 
-  const positionsArray = injectionObject[
-    userQuery as keyof typeof injectionObject
-  ]
-    ? injectionObject[userQuery as keyof typeof injectionObject].map(
-        (item) => item.position
-      )
-    : injectionObject['default'].map((item) => item.position) ?? [];
+  interface HasPosition {
+    position: number;
+  }
 
+  /**
+   * Sorts objects by `position` and ensures positions are strictly increasing
+   * by minimally incrementing duplicates (cascading increments handled).
+   */
+  function normalizePositions<T extends HasPosition>(items: readonly T[]): T[] {
+    // Shallow clone to avoid mutating inputs
+    const copy: T[] = items.map((item) => ({
+      ...item,
+      position: Math.floor(item.position),
+    }));
+
+    // Sort ascending by position
+    copy.sort((a, b) => a.position - b.position);
+
+    // Ensure strictly increasing positions
+    for (let i = 1; i < copy.length; i++) {
+      if (copy[i].position <= copy[i - 1].position) {
+        copy[i].position = copy[i - 1].position + 1;
+      }
+    }
+
+    return copy;
+  }
+
+  const normalizedInjectionArray = normalizePositions(
+    injectionObject[userQuery as keyof typeof injectionObject]
+      ? injectionObject[userQuery as keyof typeof injectionObject]
+      : injectionObject['default'] ?? []
+  );
+
+  console.log('normalizedInjectionArray', normalizedInjectionArray);
+
+  const positionsArray = normalizedInjectionArray.map(
+    (item) => item.position
+  ) ?? [5, 10, 15];
+
+  // function sortAndDeduplicatePositions(positions: number[]) {
+  //   if (!Array.isArray(positions)) return [5, 10, 15];
+
+  //   // Step 1: sort ascending
+  //   const sorted = [...positions].sort((a, b) => a - b);
+
+  //   // Step 2: ensure strictly increasing
+  //   for (let i = 1; i < sorted.length; i++) {
+  //     if (sorted[i] <= sorted[i - 1]) {
+  //       sorted[i] = sorted[i - 1] + 1;
+  //     }
+  //   }
+
+  //   return sorted;
+  // }
+
+  // const positionsArray = sortAndDeduplicatePositions(
+  //   positionsFromInjectionObject
+  // );
   // const contentArray = injectionObject[
   //   userQuery as keyof typeof injectionObject
   // ]
@@ -87,27 +137,37 @@ export default function HitsWithContent({
   //     )
   //   : injectionObject['default'].map((item) => ({ imageUrl: item.imageUrl })) ??
   //     [];
-  const contentArray = injectionObject[
-    userQuery as keyof typeof injectionObject
-  ]
-    ? injectionObject[userQuery as keyof typeof injectionObject].map((item) => (
-        <div>
-          Banner_for_
-          <strong>{item.bannerWord}</strong>{' '}
-          <a href={item.targetUrl} rel='noopener noreferrer'>
-            <img src={item.imageUrl} />
-          </a>
-        </div>
-      ))
-    : injectionObject['default'].map((item) => (
-        <div>
-          Banner_for_
-          <strong>{item.bannerWord}</strong>{' '}
-          <a href={item.targetUrl} rel='noopener noreferrer'>
-            <img src={item.imageUrl} />
-          </a>
-        </div>
-      )) ?? [];
+  // const contentArray = injectionObject[
+  //   userQuery as keyof typeof injectionObject
+  // ]
+  //   ? injectionObject[userQuery as keyof typeof injectionObject].map((item) => (
+  //       <div>
+  //         Banner_for_
+  //         <strong>{item.bannerWord}</strong>{' '}
+  //         <a href={item.targetUrl} rel='noopener noreferrer'>
+  //           <img src={item.imageUrl} />
+  //         </a>
+  //       </div>
+  //     ))
+  //   : injectionObject['default'].map((item) => (
+  //       <div>
+  //         Banner_for_
+  //         <strong>{item.bannerWord}</strong>{' '}
+  //         <a href={item.targetUrl} rel='noopener noreferrer'>
+  //           <img src={item.imageUrl} />
+  //         </a>
+  //       </div>
+  //     )) ?? [];
+  const contentArray =
+    normalizedInjectionArray.map((item) => (
+      <div>
+        Banner_for_
+        <strong>{item.bannerWord}</strong>{' '}
+        <a href={item.targetUrl} rel='noopener noreferrer'>
+          <img src={item.imageUrl} />
+        </a>
+      </div>
+    )) ?? [];
 
   console.log('contentArray', contentArray);
 
