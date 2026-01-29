@@ -16,8 +16,6 @@ const algoliaAppId: string = import.meta.env.VITE_ALGOLIA_ID;
 const algoliaSearchKey: string = import.meta.env.VITE_ALGOLIA_SEARCH_KEY;
 const searchClient = algoliasearch(algoliaAppId, algoliaSearchKey);
 
-const positions: readonly number[] = [0, 10, 15];
-
 function App() {
   return (
     <div className='container'>
@@ -41,8 +39,8 @@ function App() {
               ]}
             />
             <HitsWithContent
-              // contentTemplate={contentTemplate}
-              positions={positions}
+            // contentTemplate={contentTemplate}
+            // positions={positions}
             />
             <div className='pagination'>
               <Pagination />
