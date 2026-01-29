@@ -71,6 +71,9 @@ HitsWithContentProps) {
     ],
   };
 
+  /**
+   * Detects userData returned from Rule.
+   */
   function useUserData() {
     const { results } = useInstantSearch();
 
@@ -78,11 +81,6 @@ HitsWithContentProps) {
   }
 
   const userData = useUserData();
-
-  if (userData.length > 0) {
-    // Handle rule-driven UI changes
-    console.log('we have userData!', userData);
-  }
 
   /**
    * Sorts objects by `position` and ensures positions are strictly increasing
@@ -107,12 +105,15 @@ HitsWithContentProps) {
 
     return copy;
   }
-
-  const normalizedInjectionArray = normalizePositions(
-    injectionObject[userQuery as keyof typeof injectionObject]
-      ? injectionObject[userQuery as keyof typeof injectionObject]
-      : injectionObject['default'] ?? []
-  );
+  // TODO: WHAT VALIDATION STEPS DO WE NEED HERE FOR THE USERDATA? AND HOW DO WE COMMUNICATE THEM TO THE CUSTOMER?
+  const normalizedInjectionArray =
+    userData.length && userData[0].banner.length > 0
+      ? normalizePositions(userData[0].banner)
+      : normalizePositions(
+          injectionObject[userQuery as keyof typeof injectionObject]
+            ? injectionObject[userQuery as keyof typeof injectionObject]
+            : injectionObject['default'] ?? []
+        );
 
   const positionsArray = normalizedInjectionArray.map(
     (item) => item.position
