@@ -39,8 +39,7 @@ function App() {
               ]}
             />
             <HitsWithContent
-            // contentTemplate={contentTemplate}
-            // positions={positions}
+            // ruleOverride={false}
             />
             <div className='pagination'>
               <Pagination />

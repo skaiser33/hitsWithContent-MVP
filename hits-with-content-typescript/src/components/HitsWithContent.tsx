@@ -4,13 +4,12 @@ import Hit from './Hit';
 import Banner from './Banner';
 
 type HitsWithContentProps = {
-  // contentTemplate: React.ReactNode;
-  // positions: readonly number[];
+  ruleOverride?: boolean;
 };
 
-export default function HitsWithContent({}: // contentTemplate,
-// positions,
-HitsWithContentProps) {
+export default function HitsWithContent({
+  ruleOverride = true,
+}: HitsWithContentProps) {
   const { hits } = useHits();
   const { currentRefinement: currentPage } = usePagination();
   const { uiState, indexUiState } = useInstantSearch(); // uiState available if you want to inspect hitsPerPage, etc.
@@ -105,9 +104,10 @@ HitsWithContentProps) {
 
     return copy;
   }
+
   // TODO: WHAT VALIDATION STEPS DO WE NEED HERE FOR THE USERDATA? AND HOW DO WE COMMUNICATE THEM TO THE CUSTOMER?
   const normalizedInjectionArray =
-    userData.length && userData[0].banner.length > 0
+    ruleOverride && userData.length && userData[0].banner.length > 0
       ? normalizePositions(userData[0].banner)
       : normalizePositions(
           injectionObject[userQuery as keyof typeof injectionObject]
@@ -129,9 +129,6 @@ HitsWithContentProps) {
         </a>
       </div>
     )) ?? [];
-
-  // console.log('uiState', uiState);
-  // console.log('indexUiState', indexUiState);
 
   const insertionAfter = new Set(positionsArray); // 1-based positions
   const interleaved: React.ReactNode[] = [];
