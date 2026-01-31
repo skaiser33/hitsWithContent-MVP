@@ -38,9 +38,7 @@ function App() {
                 { label: '40 per page', value: 40 },
               ]}
             />
-            <HitsWithContent
-            // ruleOverride={false}
-            />
+            <HitsWithContent />
             <div className='pagination'>
               <Pagination />
             </div>

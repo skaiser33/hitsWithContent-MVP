@@ -24,7 +24,6 @@ export default function HitsWithContent({
       position: number;
       imageUrl: string;
       targetUrl: string;
-      // bannerWord: string;
     }[]
   > = {
     default: [
@@ -33,14 +32,12 @@ export default function HitsWithContent({
         position: 4,
         imageUrl: '../../../images/test-image-c.png',
         targetUrl: 'https://www.algolia.com/',
-        // bannerWord: 'more default',
       },
       {
         key: 'default-02',
         position: 2,
         imageUrl: '../../../images/test-image-a.png',
         targetUrl: 'https://www.algolia.com/',
-        // bannerWord: 'default',
       },
     ],
     iphone: [
@@ -49,14 +46,12 @@ export default function HitsWithContent({
         position: 3,
         imageUrl: '../../../images/test-image-a.png',
         targetUrl: 'https://www.algolia.com/',
-        // bannerWord: 'iPhone',
       },
       {
         key: 'iphone-02',
         position: 2,
         imageUrl: '../../../images/test-image-b.png',
         targetUrl: 'https://www.algolia.com/',
-        // bannerWord: 'More iPhone',
       },
     ],
     samsung: [
@@ -65,7 +60,6 @@ export default function HitsWithContent({
         position: 4,
         imageUrl: '../../../images/test-image-b.png',
         targetUrl: 'https://www.google.com/',
-        // bannerWord: 'Samsung',
       },
     ],
   };
@@ -107,8 +101,8 @@ export default function HitsWithContent({
 
   // TODO: WHAT VALIDATION STEPS DO WE NEED HERE FOR THE USERDATA? AND HOW DO WE COMMUNICATE THEM TO THE CUSTOMER?
   const normalizedInjectionArray =
-    ruleOverride && userData.length && userData[0].banner.length > 0
-      ? normalizePositions(userData[0].banner)
+    ruleOverride && userData.length && userData[0].banners.length > 0
+      ? normalizePositions(userData[0].banners)
       : normalizePositions(
           injectionObject[userQuery as keyof typeof injectionObject]
             ? injectionObject[userQuery as keyof typeof injectionObject]
