@@ -58,3 +58,7 @@ em {
   margin: 2rem auto;
   text-align: center;
 }
+
+a > img {
+  width: 100%;
+}
