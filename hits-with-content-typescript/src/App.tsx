@@ -16,6 +16,25 @@ const algoliaAppId: string = import.meta.env.VITE_ALGOLIA_ID;
 const algoliaSearchKey: string = import.meta.env.VITE_ALGOLIA_SEARCH_KEY;
 const searchClient = algoliasearch(algoliaAppId, algoliaSearchKey);
 
+const myDefaultContent: {
+  key: string;
+  position: number;
+  imageUrl: string;
+  targetUrl: string;
+}[] = [
+  {
+    key: 'default-04',
+    position: 4,
+    imageUrl: '../../../images/test-image-c.png',
+    targetUrl: 'https://www.algolia.com/',
+  },
+  {
+    key: 'default-02',
+    position: 2,
+    imageUrl: '../../../images/test-image-a.png',
+    targetUrl: 'https://www.algolia.com/',
+  },
+];
 const myInjectionObject: Record<
   string,
   {
@@ -25,20 +44,20 @@ const myInjectionObject: Record<
     targetUrl: string;
   }[]
 > = {
-  default: [
-    {
-      key: 'default-04',
-      position: 4,
-      imageUrl: '../../../images/test-image-c.png',
-      targetUrl: 'https://www.algolia.com/',
-    },
-    {
-      key: 'default-02',
-      position: 2,
-      imageUrl: '../../../images/test-image-a.png',
-      targetUrl: 'https://www.algolia.com/',
-    },
-  ],
+  // default: [
+  //   {
+  //     key: 'default-04',
+  //     position: 4,
+  //     imageUrl: '../../../images/test-image-c.png',
+  //     targetUrl: 'https://www.algolia.com/',
+  //   },
+  //   {
+  //     key: 'default-02',
+  //     position: 2,
+  //     imageUrl: '../../../images/test-image-a.png',
+  //     targetUrl: 'https://www.algolia.com/',
+  //   },
+  // ],
   iphone: [
     {
       key: 'iphone-01',
@@ -85,7 +104,11 @@ function App() {
                 { label: '40 per page', value: 40 },
               ]}
             />
-            <HitsWithContent injectionObject={myInjectionObject} />
+            <HitsWithContent
+              defaultContent={myDefaultContent}
+              injectionObject={myInjectionObject}
+              ruleOverride={true}
+            />
             <div className='pagination'>
               <Pagination />
             </div>

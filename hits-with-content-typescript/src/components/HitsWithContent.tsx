@@ -4,7 +4,13 @@ import Hit from './Hit';
 import Banner from './Banner';
 
 type HitsWithContentProps = {
-  injectionObject: Record<
+  defaultContent: {
+    key: string;
+    position: number;
+    imageUrl: string;
+    targetUrl: string;
+  }[];
+  injectionObject?: Record<
     string,
     {
       key: string;
@@ -17,6 +23,7 @@ type HitsWithContentProps = {
 };
 
 export default function HitsWithContent({
+  defaultContent,
   injectionObject,
   ruleOverride = true,
 }: HitsWithContentProps) {
@@ -67,9 +74,9 @@ export default function HitsWithContent({
     ruleOverride && userData.length && userData[0].banners.length > 0
       ? normalizePositions(userData[0].banners)
       : normalizePositions(
-          injectionObject[userQuery as keyof typeof injectionObject]
-            ? injectionObject[userQuery as keyof typeof injectionObject]
-            : injectionObject['default'] ?? []
+          injectionObject?.[userQuery as keyof typeof injectionObject]
+            ? injectionObject?.[userQuery as keyof typeof injectionObject]
+            : defaultContent ?? []
         );
 
   const positionsArray = normalizedInjectionArray.map(
