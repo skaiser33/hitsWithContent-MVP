@@ -17,19 +17,19 @@ const algoliaSearchKey: string = import.meta.env.VITE_ALGOLIA_SEARCH_KEY;
 const searchClient = algoliasearch(algoliaAppId, algoliaSearchKey);
 
 const myDefaultContent: {
-  key: string;
+  contentId: string;
   position: number;
   imageUrl: string;
   targetUrl: string;
 }[] = [
   {
-    key: 'default-04',
+    contentId: 'default-04',
     position: 4,
     imageUrl: '../../../images/test-image-c.png',
     targetUrl: 'https://www.algolia.com/',
   },
   {
-    key: 'default-02',
+    contentId: 'default-02',
     position: 2,
     imageUrl: '../../../images/test-image-a.png',
     targetUrl: 'https://www.algolia.com/',
@@ -38,7 +38,7 @@ const myDefaultContent: {
 const myInjectionObject: Record<
   string,
   {
-    key: string;
+    contentId: string;
     position: number;
     imageUrl: string;
     targetUrl: string;
@@ -46,13 +46,13 @@ const myInjectionObject: Record<
 > = {
   // default: [
   //   {
-  //     key: 'default-04',
+  //     contentId: 'default-04',
   //     position: 4,
   //     imageUrl: '../../../images/test-image-c.png',
   //     targetUrl: 'https://www.algolia.com/',
   //   },
   //   {
-  //     key: 'default-02',
+  //     contentId: 'default-02',
   //     position: 2,
   //     imageUrl: '../../../images/test-image-a.png',
   //     targetUrl: 'https://www.algolia.com/',
@@ -60,13 +60,13 @@ const myInjectionObject: Record<
   // ],
   iphone: [
     {
-      key: 'iphone-01',
+      contentId: 'iphone-01',
       position: 3,
       imageUrl: '../../../images/test-image-a.png',
       targetUrl: 'https://www.algolia.com/',
     },
     {
-      key: 'iphone-02',
+      contentId: 'iphone-02',
       position: 2,
       imageUrl: '../../../images/test-image-b.png',
       targetUrl: 'https://www.algolia.com/',
@@ -74,7 +74,7 @@ const myInjectionObject: Record<
   ],
   samsung: [
     {
-      key: 'samsung-01',
+      contentId: 'samsung-01',
       position: 4,
       imageUrl: '../../../images/test-image-b.png',
       targetUrl: 'https://www.google.com/',

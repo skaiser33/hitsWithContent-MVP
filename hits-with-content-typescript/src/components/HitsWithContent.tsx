@@ -5,7 +5,7 @@ import Banner from './Banner';
 
 type HitsWithContentProps = {
   defaultContent: {
-    key: string;
+    contentId: string;
     position: number;
     imageUrl: string;
     targetUrl: string;
@@ -13,7 +13,7 @@ type HitsWithContentProps = {
   injectionObject?: Record<
     string,
     {
-      key: string;
+      contentId: string;
       position: number;
       imageUrl: string;
       targetUrl: string;
@@ -27,11 +27,13 @@ export default function HitsWithContent({
   injectionObject,
   ruleOverride = true,
 }: HitsWithContentProps) {
-  const { hits } = useHits();
+  const { items } = useHits();
   const { currentRefinement: currentPage } = usePagination();
-  const { uiState, indexUiState } = useInstantSearch(); // uiState available if you want to inspect hitsPerPage, etc.
+  const { indexUiState } = useInstantSearch(); // add uiState if you want to inspect hitsPerPage, etc.
 
-  // ***QUERY MATCHING WITHOUT RULES***
+  /**
+   * Normalizes userQuery for matching against injectionObject.
+   */
   const userQuery: string = (indexUiState.query ?? '').toLowerCase();
 
   /**
@@ -47,10 +49,13 @@ export default function HitsWithContent({
 
   /**
    * Sorts objects by `position` and ensures positions are strictly increasing
-   * by minimally incrementing duplicates (cascading increments handled).
+   * by minimally incrementing duplicates.
    */
   interface HasPosition {
+    contentId: string;
     position: number;
+    targetUrl: string;
+    imageUrl: string;
   }
   function normalizePositions<T extends HasPosition>(items: readonly T[]): T[] {
     const copy: T[] = items.map((item) => ({
@@ -85,9 +90,7 @@ export default function HitsWithContent({
 
   const contentArray =
     normalizedInjectionArray.map((item) => (
-      <div>
-        {/* Banner_for_ */}
-        {/* <strong>{item.bannerWord}</strong>{' '} */}
+      <div key={item.contentId}>
         <a href={item.targetUrl} rel='noopener noreferrer'>
           <img src={item.imageUrl} />
         </a>
@@ -108,7 +111,7 @@ export default function HitsWithContent({
       </li>
     );
   }
-  hits.forEach((hit, idx) => {
+  items.forEach((hit, idx) => {
     interleaved.push(
       <li key={hit.objectID} className='ais-Hits-item'>
         <Hit hit={hit} />
@@ -118,11 +121,10 @@ export default function HitsWithContent({
     const position = idx + 1;
     if (insertionAfter.has(position)) {
       const bannerKey = `banner-p${currentPage}-pos${position}`;
-      const bannerId = position === 5 ? 'A' : position === 10 ? 'B' : 'C';
 
       interleaved.push(
         <li key={bannerKey} className='ais-Hits-item'>
-          <Banner id={bannerId}>{contentArray.shift()}</Banner>
+          <Banner id={`banner-${position}`}>{contentArray.shift()}</Banner>
         </li>
       );
     }
