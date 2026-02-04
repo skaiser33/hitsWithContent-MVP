@@ -16,6 +16,53 @@ const algoliaAppId: string = import.meta.env.VITE_ALGOLIA_ID;
 const algoliaSearchKey: string = import.meta.env.VITE_ALGOLIA_SEARCH_KEY;
 const searchClient = algoliasearch(algoliaAppId, algoliaSearchKey);
 
+const myInjectionObject: Record<
+  string,
+  {
+    key: string;
+    position: number;
+    imageUrl: string;
+    targetUrl: string;
+  }[]
+> = {
+  default: [
+    {
+      key: 'default-04',
+      position: 4,
+      imageUrl: '../../../images/test-image-c.png',
+      targetUrl: 'https://www.algolia.com/',
+    },
+    {
+      key: 'default-02',
+      position: 2,
+      imageUrl: '../../../images/test-image-a.png',
+      targetUrl: 'https://www.algolia.com/',
+    },
+  ],
+  iphone: [
+    {
+      key: 'iphone-01',
+      position: 3,
+      imageUrl: '../../../images/test-image-a.png',
+      targetUrl: 'https://www.algolia.com/',
+    },
+    {
+      key: 'iphone-02',
+      position: 2,
+      imageUrl: '../../../images/test-image-b.png',
+      targetUrl: 'https://www.algolia.com/',
+    },
+  ],
+  samsung: [
+    {
+      key: 'samsung-01',
+      position: 4,
+      imageUrl: '../../../images/test-image-b.png',
+      targetUrl: 'https://www.google.com/',
+    },
+  ],
+};
+
 function App() {
   return (
     <div className='container'>
@@ -38,7 +85,7 @@ function App() {
                 { label: '40 per page', value: 40 },
               ]}
             />
-            <HitsWithContent />
+            <HitsWithContent injectionObject={myInjectionObject} />
             <div className='pagination'>
               <Pagination />
             </div>

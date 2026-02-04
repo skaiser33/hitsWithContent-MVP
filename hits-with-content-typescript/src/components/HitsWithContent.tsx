@@ -4,10 +4,20 @@ import Hit from './Hit';
 import Banner from './Banner';
 
 type HitsWithContentProps = {
+  injectionObject: Record<
+    string,
+    {
+      key: string;
+      position: number;
+      imageUrl: string;
+      targetUrl: string;
+    }[]
+  >;
   ruleOverride?: boolean;
 };
 
 export default function HitsWithContent({
+  injectionObject,
   ruleOverride = true,
 }: HitsWithContentProps) {
   const { hits } = useHits();
@@ -16,53 +26,6 @@ export default function HitsWithContent({
 
   // ***QUERY MATCHING WITHOUT RULES***
   const userQuery: string = (indexUiState.query ?? '').toLowerCase();
-
-  const injectionObject: Record<
-    string,
-    {
-      key: string;
-      position: number;
-      imageUrl: string;
-      targetUrl: string;
-    }[]
-  > = {
-    default: [
-      {
-        key: 'default-04',
-        position: 4,
-        imageUrl: '../../../images/test-image-c.png',
-        targetUrl: 'https://www.algolia.com/',
-      },
-      {
-        key: 'default-02',
-        position: 2,
-        imageUrl: '../../../images/test-image-a.png',
-        targetUrl: 'https://www.algolia.com/',
-      },
-    ],
-    iphone: [
-      {
-        key: 'iphone-01',
-        position: 3,
-        imageUrl: '../../../images/test-image-a.png',
-        targetUrl: 'https://www.algolia.com/',
-      },
-      {
-        key: 'iphone-02',
-        position: 2,
-        imageUrl: '../../../images/test-image-b.png',
-        targetUrl: 'https://www.algolia.com/',
-      },
-    ],
-    samsung: [
-      {
-        key: 'samsung-01',
-        position: 4,
-        imageUrl: '../../../images/test-image-b.png',
-        targetUrl: 'https://www.google.com/',
-      },
-    ],
-  };
 
   /**
    * Detects userData returned from Rule.
