@@ -2,6 +2,7 @@ import { useHits, usePagination, useInstantSearch } from 'react-instantsearch';
 
 import Hit from './Hit';
 import Banner from './Banner';
+import normalizePositions from '../logic/normalizePositions';
 
 type HitsWithContentProps = {
   defaultContent: {
@@ -47,34 +48,12 @@ export default function HitsWithContent({
 
   const userData = useUserData();
 
+  // TODO: WHAT VALIDATION STEPS DO WE NEED HERE FOR THE USERDATA? AND HOW DO WE COMMUNICATE THEM TO THE CUSTOMER?
+
   /**
    * Sorts objects by `position` and ensures positions are strictly increasing
    * by minimally incrementing duplicates.
    */
-  interface HasPosition {
-    contentId: string;
-    position: number;
-    targetUrl: string;
-    imageUrl: string;
-  }
-  function normalizePositions<T extends HasPosition>(items: readonly T[]): T[] {
-    const copy: T[] = items.map((item) => ({
-      ...item,
-      position: Math.floor(item.position),
-    }));
-
-    copy.sort((a, b) => a.position - b.position);
-
-    for (let i = 1; i < copy.length; i++) {
-      if (copy[i].position <= copy[i - 1].position) {
-        copy[i].position = copy[i - 1].position + 1;
-      }
-    }
-
-    return copy;
-  }
-
-  // TODO: WHAT VALIDATION STEPS DO WE NEED HERE FOR THE USERDATA? AND HOW DO WE COMMUNICATE THEM TO THE CUSTOMER?
   const normalizedInjectionArray =
     ruleOverride && userData.length && userData[0].banners.length > 0
       ? normalizePositions(userData[0].banners)
@@ -90,11 +69,9 @@ export default function HitsWithContent({
 
   const contentArray =
     normalizedInjectionArray.map((item) => (
-      <div key={item.contentId}>
-        <a href={item.targetUrl} rel='noopener noreferrer'>
-          <img src={item.imageUrl} />
-        </a>
-      </div>
+      <a key={item.contentId} href={item.targetUrl} rel='noopener noreferrer'>
+        <img src={item.imageUrl} />
+      </a>
     )) ?? [];
 
   const insertionAfter = new Set(positionsArray); // 1-based positions
