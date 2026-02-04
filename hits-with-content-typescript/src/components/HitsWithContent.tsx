@@ -2,67 +2,40 @@ import { useHits, usePagination, useInstantSearch } from 'react-instantsearch';
 
 import Hit from './Hit';
 import Banner from './Banner';
+import normalizePositions from '../logic/normalizePositions';
 
 type HitsWithContentProps = {
-  ruleOverride?: boolean;
-};
-
-export default function HitsWithContent({
-  ruleOverride = true,
-}: HitsWithContentProps) {
-  const { hits } = useHits();
-  const { currentRefinement: currentPage } = usePagination();
-  const { uiState, indexUiState } = useInstantSearch(); // uiState available if you want to inspect hitsPerPage, etc.
-
-  // ***QUERY MATCHING WITHOUT RULES***
-  const userQuery: string = (indexUiState.query ?? '').toLowerCase();
-
-  const injectionObject: Record<
+  defaultContent: {
+    contentId: string;
+    position: number;
+    imageUrl: string;
+    targetUrl: string;
+  }[];
+  injectionObject?: Record<
     string,
     {
-      key: string;
+      contentId: string;
       position: number;
       imageUrl: string;
       targetUrl: string;
     }[]
-  > = {
-    default: [
-      {
-        key: 'default-04',
-        position: 4,
-        imageUrl: '../../../images/test-image-c.png',
-        targetUrl: 'https://www.algolia.com/',
-      },
-      {
-        key: 'default-02',
-        position: 2,
-        imageUrl: '../../../images/test-image-a.png',
-        targetUrl: 'https://www.algolia.com/',
-      },
-    ],
-    iphone: [
-      {
-        key: 'iphone-01',
-        position: 3,
-        imageUrl: '../../../images/test-image-a.png',
-        targetUrl: 'https://www.algolia.com/',
-      },
-      {
-        key: 'iphone-02',
-        position: 2,
-        imageUrl: '../../../images/test-image-b.png',
-        targetUrl: 'https://www.algolia.com/',
-      },
-    ],
-    samsung: [
-      {
-        key: 'samsung-01',
-        position: 4,
-        imageUrl: '../../../images/test-image-b.png',
-        targetUrl: 'https://www.google.com/',
-      },
-    ],
-  };
+  >;
+  ruleOverride?: boolean;
+};
+
+export default function HitsWithContent({
+  defaultContent,
+  injectionObject,
+  ruleOverride = true,
+}: HitsWithContentProps) {
+  const { items } = useHits();
+  const { currentRefinement: currentPage } = usePagination();
+  const { indexUiState } = useInstantSearch(); // add uiState if you want to inspect hitsPerPage, etc.
+
+  /**
+   * Normalizes userQuery for matching against injectionObject.
+   */
+  const userQuery: string = (indexUiState.query ?? '').toLowerCase();
 
   /**
    * Detects userData returned from Rule.
@@ -75,38 +48,19 @@ export default function HitsWithContent({
 
   const userData = useUserData();
 
+  // TODO: WHAT VALIDATION STEPS DO WE NEED HERE FOR THE USERDATA? AND HOW DO WE COMMUNICATE THEM TO THE CUSTOMER?
+
   /**
    * Sorts objects by `position` and ensures positions are strictly increasing
-   * by minimally incrementing duplicates (cascading increments handled).
+   * by minimally incrementing duplicates.
    */
-  interface HasPosition {
-    position: number;
-  }
-  function normalizePositions<T extends HasPosition>(items: readonly T[]): T[] {
-    const copy: T[] = items.map((item) => ({
-      ...item,
-      position: Math.floor(item.position),
-    }));
-
-    copy.sort((a, b) => a.position - b.position);
-
-    for (let i = 1; i < copy.length; i++) {
-      if (copy[i].position <= copy[i - 1].position) {
-        copy[i].position = copy[i - 1].position + 1;
-      }
-    }
-
-    return copy;
-  }
-
-  // TODO: WHAT VALIDATION STEPS DO WE NEED HERE FOR THE USERDATA? AND HOW DO WE COMMUNICATE THEM TO THE CUSTOMER?
   const normalizedInjectionArray =
     ruleOverride && userData.length && userData[0].banners.length > 0
       ? normalizePositions(userData[0].banners)
       : normalizePositions(
-          injectionObject[userQuery as keyof typeof injectionObject]
-            ? injectionObject[userQuery as keyof typeof injectionObject]
-            : injectionObject['default'] ?? []
+          injectionObject?.[userQuery as keyof typeof injectionObject]
+            ? injectionObject?.[userQuery as keyof typeof injectionObject]
+            : defaultContent ?? []
         );
 
   const positionsArray = normalizedInjectionArray.map(
@@ -115,13 +69,9 @@ export default function HitsWithContent({
 
   const contentArray =
     normalizedInjectionArray.map((item) => (
-      <div>
-        {/* Banner_for_ */}
-        {/* <strong>{item.bannerWord}</strong>{' '} */}
-        <a href={item.targetUrl} rel='noopener noreferrer'>
-          <img src={item.imageUrl} />
-        </a>
-      </div>
+      <a key={item.contentId} href={item.targetUrl} rel='noopener noreferrer'>
+        <img src={item.imageUrl} />
+      </a>
     )) ?? [];
 
   const insertionAfter = new Set(positionsArray); // 1-based positions
@@ -138,7 +88,7 @@ export default function HitsWithContent({
       </li>
     );
   }
-  hits.forEach((hit, idx) => {
+  items.forEach((hit, idx) => {
     interleaved.push(
       <li key={hit.objectID} className='ais-Hits-item'>
         <Hit hit={hit} />
@@ -148,11 +98,10 @@ export default function HitsWithContent({
     const position = idx + 1;
     if (insertionAfter.has(position)) {
       const bannerKey = `banner-p${currentPage}-pos${position}`;
-      const bannerId = position === 5 ? 'A' : position === 10 ? 'B' : 'C';
 
       interleaved.push(
         <li key={bannerKey} className='ais-Hits-item'>
-          <Banner id={bannerId}>{contentArray.shift()}</Banner>
+          <Banner id={`banner-${position}`}>{contentArray.shift()}</Banner>
         </li>
       );
     }

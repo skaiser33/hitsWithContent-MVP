@@ -16,6 +16,72 @@ const algoliaAppId: string = import.meta.env.VITE_ALGOLIA_ID;
 const algoliaSearchKey: string = import.meta.env.VITE_ALGOLIA_SEARCH_KEY;
 const searchClient = algoliasearch(algoliaAppId, algoliaSearchKey);
 
+const myDefaultContent: {
+  contentId: string;
+  position: number;
+  imageUrl: string;
+  targetUrl: string;
+}[] = [
+  {
+    contentId: 'default-04',
+    position: 4,
+    imageUrl: '../../../images/test-image-c.png',
+    targetUrl: 'https://www.algolia.com/',
+  },
+  {
+    contentId: 'default-02',
+    position: 2,
+    imageUrl: '../../../images/test-image-a.png',
+    targetUrl: 'https://www.algolia.com/',
+  },
+];
+const myInjectionObject: Record<
+  string,
+  {
+    contentId: string;
+    position: number;
+    imageUrl: string;
+    targetUrl: string;
+  }[]
+> = {
+  // default: [
+  //   {
+  //     contentId: 'default-04',
+  //     position: 4,
+  //     imageUrl: '../../../images/test-image-c.png',
+  //     targetUrl: 'https://www.algolia.com/',
+  //   },
+  //   {
+  //     contentId: 'default-02',
+  //     position: 2,
+  //     imageUrl: '../../../images/test-image-a.png',
+  //     targetUrl: 'https://www.algolia.com/',
+  //   },
+  // ],
+  iphone: [
+    {
+      contentId: 'iphone-01',
+      position: 3,
+      imageUrl: '../../../images/test-image-a.png',
+      targetUrl: 'https://www.algolia.com/',
+    },
+    {
+      contentId: 'iphone-02',
+      position: 2,
+      imageUrl: '../../../images/test-image-b.png',
+      targetUrl: 'https://www.algolia.com/',
+    },
+  ],
+  samsung: [
+    {
+      contentId: 'samsung-01',
+      position: 4,
+      imageUrl: '../../../images/test-image-b.png',
+      targetUrl: 'https://www.google.com/',
+    },
+  ],
+};
+
 function App() {
   return (
     <div className='container'>
@@ -38,7 +104,11 @@ function App() {
                 { label: '40 per page', value: 40 },
               ]}
             />
-            <HitsWithContent />
+            <HitsWithContent
+              defaultContent={myDefaultContent}
+              injectionObject={myInjectionObject}
+              ruleOverride={true}
+            />
             <div className='pagination'>
               <Pagination />
             </div>
