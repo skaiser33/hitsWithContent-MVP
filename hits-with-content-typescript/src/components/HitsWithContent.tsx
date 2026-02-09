@@ -70,7 +70,17 @@ export default function HitsWithContent({
   const contentArray =
     normalizedInjectionArray.map((item) => (
       <a key={item.contentId} href={item.targetUrl} rel='noopener noreferrer'>
-        <img src={item.imageUrl} />
+        <img
+          src={item.imageUrl}
+          style={{
+            height: '100%',
+            width: '100%',
+            maxHeight: '150px', // Adjust to match Hit component height
+            maxWidth: '150px', // Adjust to match Hit component width
+            objectFit: 'contain',
+            display: 'block',
+          }}
+        />
       </a>
     )) ?? [];
 
@@ -83,7 +93,7 @@ export default function HitsWithContent({
     const bannerId = '0';
 
     interleaved.push(
-      <li key={bannerKey} className='ais-Hits-item'>
+      <li key={bannerKey} className='ais-Injection-item'>
         <Banner id={bannerId}>{contentArray.shift()}</Banner>
       </li>
     );
@@ -100,7 +110,7 @@ export default function HitsWithContent({
       const bannerKey = `banner-p${currentPage}-pos${position}`;
 
       interleaved.push(
-        <li key={bannerKey} className='ais-Hits-item'>
+        <li key={bannerKey} className='ais-Injection-item'>
           <Banner id={`banner-${position}`}>{contentArray.shift()}</Banner>
         </li>
       );
