@@ -21,12 +21,14 @@ type HitsWithContentProps = {
     }[]
   >;
   ruleOverride?: boolean;
+  contentSpaces?: 1 | 2 | 3; // New optional prop with allowed values 1, 2, or 3
 };
 
 export default function HitsWithContent({
   defaultContent,
   injectionObject,
   ruleOverride = true,
+  contentSpaces = 1, // Default value set to 1
 }: HitsWithContentProps) {
   const { items } = useHits();
   const { currentRefinement: currentPage } = usePagination();
@@ -93,7 +95,11 @@ export default function HitsWithContent({
     const bannerId = '0';
 
     interleaved.push(
-      <li key={bannerKey} className='ais-Injection-item'>
+      <li
+        key={bannerKey}
+        className='ais-Injection-item'
+        style={{ gridColumn: `span ${contentSpaces}` }} // Adjust grid span based on contentSpaces
+      >
         <Banner id={bannerId}>{contentArray.shift()}</Banner>
       </li>
     );
@@ -110,7 +116,11 @@ export default function HitsWithContent({
       const bannerKey = `banner-p${currentPage}-pos${position}`;
 
       interleaved.push(
-        <li key={bannerKey} className='ais-Injection-item'>
+        <li
+          key={bannerKey}
+          className='ais-Injection-item'
+          style={{ width: `calc(${25 * contentSpaces}% - 1rem)` }} // Adjust grid span based on contentSpaces
+        >
           <Banner id={`banner-${position}`}>{contentArray.shift()}</Banner>
         </li>
       );
