@@ -109,3 +109,211 @@ yarn start
 ```
 
 Open http://localhost:5173 to see your app.
+
+---
+
+title: HitsWithContent
+description: Shows search results with non-record image content injected at specified positions.
+
+---
+
+import Deprecated from "/snippets/instantsearch/deprecated-v6.mdx";
+import Monetary from "/snippets/instantsearch/monetary.mdx";
+import StableReference from "/snippets/instantsearch/react-stable-reference.mdx";
+import TransformItems from "/snippets/instantsearch/transform-items.mdx";
+
+<Deprecated />
+
+```tsx Signature
+<HitsWithContent
+  // Optional props
+  defaultContent={array of objects}
+  injectionObject={object}
+  ruleOverride={boolean}
+  contentSpaces={integer}
+/>
+```
+
+## About this widget
+
+{/_ vale Algolia.HeadingPronouns = YES _/}
+
+The `<HitsWithContent>` widget displays a list of results with non-record image content (ie: not indexed to Algolia) injected at specified positions. This could include banners, sponsored listings, etc.
+
+This widget is compatible with `userData` values returned via Algolia rules (as described [here](https://www.algolia.com/doc/guides/managing-results/rules/merchandising-and-promoting/how-to/add-banners#create-a-rule-for-returning-custom-data)), but the consequence must be returned with a key of `"banners"` and a value of an array of objects that specifies the unique contentID, injection position, imageUrl, and targetUrl (if the user clicks on the image) for each content item. For example, the Custom JSON Data for the rule consequence could be:
+
+```js JavaScript icon="code"
+{
+  "banners": [
+    {
+      contentId: 'myContent-01',
+      position: 4,
+      imageUrl: 'https://www.my-website.com/images/my-image-01.png',
+      targetUrl: 'https://www.algolia.com/',
+    },
+    {
+      contentId: 'myContent-02',
+      position: 8,
+      imageUrl: 'https://www.my-website.com/images/my-image-02.png',
+      targetUrl: 'https://www.google.com/',
+    },
+  ]
+}
+```
+
+## Examples
+
+<CodeGroup>
+
+```tsx TypeScript
+import { InstantSearch } from 'react-instantsearch';
+import algoliasearch from 'algoliasearch/lite';
+
+import HitsWithContent from './components/HitsWithContent';
+
+const searchClient = algoliasearch('YourApplicationID', 'YourSearchOnlyAPIKey');
+
+function App() {
+  return (
+    <div className='container'>
+      <InstantSearch searchClient={searchClient} indexName='demo_ecommerce'>
+        <HitsWithContent
+          defaultContent={myDefaultContent}
+          injectionObject={myInjectionObject}
+          ruleOverride={true}
+          contentSpaces={2}
+        />
+      </InstantSearch>
+    </div>
+  );
+}
+```
+
+</CodeGroup>
+
+## Props
+
+<ParamField body="defaultContent" type="{
+    contentId: string; 
+    position: number;
+    imageUrl: string;
+    targetUrl: string;
+  }[]">
+
+An array of objects that specifies the unique contentID, injection position, imageUrl, and targetUrl (if the user clicks on the image) for each content item for any "default" query that does not (a) match a query in the `injectionObject` or (b) return `userData` via an Algolia rule.
+
+When not provided, the widget displays the search results with no injected content for "default"/unmatched queries.
+
+```tsx TypeScript icon="code"
+const myDefaultContent: {
+  contentId: string;
+  position: number;
+  imageUrl: string;
+  targetUrl: string;
+}[] = [
+  {
+    contentId: 'myContent-01',
+    position: 4,
+    imageUrl: 'https://www.my-website.com/images/my-image-01.png',
+    targetUrl: 'https://www.algolia.com/',
+  },
+  {
+    contentId: 'myContent-02',
+    position: 8,
+    imageUrl: 'https://www.my-website.com/images/my-image-02.png',
+    targetUrl: 'https://www.google.com/',
+  },
+];
+<HitsWithContent
+  // ...
+  defaultContent={myDefaultContent}
+/>;
+```
+
+</ParamField>
+
+<ParamField body="injectionObject" type="Record<
+string,
+{
+contentId: string;
+position: number;
+imageUrl: string;
+targetUrl: string;
+}[]
+
+> ">
+
+An object in which each key is a query string and a value is array of objects that specifies the unique contentID, injection position, imageUrl, and targetUrl (if the user clicks on the image) for each content item to be injected between hits when the end user enters that specific query.
+
+By default, if one of the specified query strings returns `userData` via an Algolia rule, the `userData` values will be injected instead of the `injectionObject` content.
+
+```tsx TypeScript icon="code"
+const myInjectionObject: Record<
+  string,
+  {
+    contentId: string;
+    position: number;
+    imageUrl: string;
+    targetUrl: string;
+  }[]
+> = {
+  iphone: [
+    {
+      contentId: 'iphone-01',
+      position: 3,
+      imageUrl: 'https://www.my-website.com/images/iphone-image-01.png',
+      targetUrl: 'https://www.algolia.com/',
+    },
+    {
+      contentId: 'iphone-02',
+      position: 6,
+      imageUrl: 'https://www.my-website.com/images/iphone-image-02.png',
+      targetUrl: 'https://www.google.com/',
+    },
+  ],
+  samsung: [
+    {
+      contentId: 'samsung-01',
+      position: 4,
+      imageUrl: 'https://www.my-website.com/images/samsung-image-01.png',
+      targetUrl: 'https://www.algolia.com/',
+    },
+  ],
+};
+<HitsWithContent
+  // ...
+  injectionObject={myInjectionObject}
+/>;
+```
+
+</ParamField>
+
+<ParamField body="ruleOverride" type="boolean" default={true}>
+
+When set to `false`, content returned in `userData` via an Algolia rule will _not_ be injected in place of `injectionObject` or `defaultContent` content.
+
+```tsx TypeScript icon="code"
+<HitsWithContent
+  // ...
+  ruleOverride={false}
+/>
+```
+
+</ParamField>
+
+<ParamField body="contentSpaces" type="integer" default={1}>
+
+Maximum: 3 // Minimum: 1
+
+Compatible with the algolia-min.css theme.
+
+When set to 2 or 3, the injected content will span the space of 2 or 3 hits respectively.
+
+```tsx TypeScript icon="code"
+<HitsWithContent
+  // ...
+  contentSpaces={2}
+/>
+```
+
+</ParamField>

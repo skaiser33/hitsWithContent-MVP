@@ -95,7 +95,7 @@ function App() {
               defaultContent={myDefaultContent}
               injectionObject={myInjectionObject}
               ruleOverride={true}
-              contentSpaces={2}
+              contentSpaces={1}
             />
             <div className='pagination'>
               <Pagination />

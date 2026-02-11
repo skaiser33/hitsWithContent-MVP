@@ -5,7 +5,7 @@ import Banner from './Banner';
 import normalizePositions from '../logic/normalizePositions';
 
 type HitsWithContentProps = {
-  defaultContent: {
+  defaultContent?: {
     contentId: string;
     position: number;
     imageUrl: string;
@@ -21,7 +21,7 @@ type HitsWithContentProps = {
     }[]
   >;
   ruleOverride?: boolean;
-  contentSpaces?: 1 | 2 | 3; // New optional prop with allowed values 1, 2, or 3
+  contentSpaces?: 1 | 2 | 3;
 };
 
 export default function HitsWithContent({
@@ -77,10 +77,9 @@ export default function HitsWithContent({
           style={{
             height: '100%',
             width: '100%',
-            maxHeight: '150px', // Adjust to match Hit component height
-            maxWidth: '150px', // Adjust to match Hit component width
-            objectFit: 'contain',
+            objectFit: 'cover',
             display: 'block',
+            margin: '0 auto',
           }}
         />
       </a>
@@ -98,7 +97,13 @@ export default function HitsWithContent({
       <li
         key={bannerKey}
         className='ais-Injection-item'
-        style={{ gridColumn: `span ${contentSpaces}` }} // Adjust grid span based on contentSpaces
+        style={{
+          width: `calc(${25 * contentSpaces}% - 1rem)`,
+          height: '150px',
+          overflow: 'hidden',
+          display: 'flex',
+          alignItems: 'center',
+        }}
       >
         <Banner id={bannerId}>{contentArray.shift()}</Banner>
       </li>
@@ -119,7 +124,13 @@ export default function HitsWithContent({
         <li
           key={bannerKey}
           className='ais-Injection-item'
-          style={{ width: `calc(${25 * contentSpaces}% - 1rem)` }} // Adjust grid span based on contentSpaces
+          style={{
+            width: `calc(${25 * contentSpaces}% - 1rem)`, // Adjust span based on contentSpaces
+            height: '150px',
+            overflow: 'hidden',
+            display: 'flex',
+            alignItems: 'center',
+          }}
         >
           <Banner id={`banner-${position}`}>{contentArray.shift()}</Banner>
         </li>
