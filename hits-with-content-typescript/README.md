@@ -112,9 +112,9 @@ Open http://localhost:5173 to see your app.
 
 ---
 
-### HitsWithContent Documentation
+# HitsWithContent Documentation
 
-# Shows search results with non-record image content injected at specified positions.
+### Shows search results with non-record image content injected at specified positions.
 
 ---
 
@@ -221,19 +221,19 @@ const myDefaultContent: {
 />;
 ```
 
+---
+
 **`injectionObject`**
 
 type:
 `Record<
 string,
-{
-contentId: string;
-position: number;
-imageUrl: string;
-targetUrl: string;
-}[]
-
-> `
+  {
+    contentId: string;
+    position: number;
+    imageUrl: string;
+    targetUrl: string;
+  }[]> `
 
 An object in which each key is a query string and a value is array of objects that specifies the unique contentID, injection position, imageUrl, and targetUrl (if the user clicks on the image) for each content item to be injected between hits when the end user enters that specific query.
 
@@ -278,7 +278,10 @@ const myInjectionObject: Record<
 />;
 ```
 
+---
+
 **`ruleOverride`**
+
 type: `boolean` default:`true`
 
 When set to `false`, content returned in `userData` via an Algolia rule will _not_ be injected in place of `injectionObject` or `defaultContent` content.
@@ -290,7 +293,10 @@ When set to `false`, content returned in `userData` via an Algolia rule will _no
 />
 ```
 
+---
+
 **`contentSpaces`**
+
 type: `integer` default:`1` maximum: `3` minimum: `1`
 
 Compatible with the algolia-min.css theme.
