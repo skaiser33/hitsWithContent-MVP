@@ -112,17 +112,11 @@ Open http://localhost:5173 to see your app.
 
 ---
 
-title: HitsWithContent
-description: Shows search results with non-record image content injected at specified positions.
+### HitsWithContent Documentation
+
+# Shows search results with non-record image content injected at specified positions.
 
 ---
-
-import Deprecated from "/snippets/instantsearch/deprecated-v6.mdx";
-import Monetary from "/snippets/instantsearch/monetary.mdx";
-import StableReference from "/snippets/instantsearch/react-stable-reference.mdx";
-import TransformItems from "/snippets/instantsearch/transform-items.mdx";
-
-<Deprecated />
 
 ```tsx Signature
 <HitsWithContent
@@ -135,8 +129,6 @@ import TransformItems from "/snippets/instantsearch/transform-items.mdx";
 ```
 
 ## About this widget
-
-{/_ vale Algolia.HeadingPronouns = YES _/}
 
 The `<HitsWithContent>` widget displays a list of results with non-record image content (ie: not indexed to Algolia) injected at specified positions. This could include banners, sponsored listings, etc.
 
@@ -163,8 +155,6 @@ This widget is compatible with `userData` values returned via Algolia rules (as 
 
 ## Examples
 
-<CodeGroup>
-
 ```tsx TypeScript
 import { InstantSearch } from 'react-instantsearch';
 import algoliasearch from 'algoliasearch/lite';
@@ -189,20 +179,21 @@ function App() {
 }
 ```
 
-</CodeGroup>
-
 ## Props
 
-<ParamField body="defaultContent" type="{
+**`defaultContent`**
+
+type:
+`{
     contentId: string; 
     position: number;
     imageUrl: string;
     targetUrl: string;
-  }[]">
+  }[]">`
 
 An array of objects that specifies the unique contentID, injection position, imageUrl, and targetUrl (if the user clicks on the image) for each content item for any "default" query that does not (a) match a query in the `injectionObject` or (b) return `userData` via an Algolia rule.
 
-When not provided, the widget displays the search results with no injected content for "default"/unmatched queries.
+When not provided, the widget displays the search results with no injected content for "default" / unmatched queries.
 
 ```tsx TypeScript icon="code"
 const myDefaultContent: {
@@ -230,9 +221,10 @@ const myDefaultContent: {
 />;
 ```
 
-</ParamField>
+**`injectionObject`**
 
-<ParamField body="injectionObject" type="Record<
+type:
+`Record<
 string,
 {
 contentId: string;
@@ -241,7 +233,7 @@ imageUrl: string;
 targetUrl: string;
 }[]
 
-> ">
+> `
 
 An object in which each key is a query string and a value is array of objects that specifies the unique contentID, injection position, imageUrl, and targetUrl (if the user clicks on the image) for each content item to be injected between hits when the end user enters that specific query.
 
@@ -286,9 +278,8 @@ const myInjectionObject: Record<
 />;
 ```
 
-</ParamField>
-
-<ParamField body="ruleOverride" type="boolean" default={true}>
+**`ruleOverride`**
+type: `boolean` default:`true`
 
 When set to `false`, content returned in `userData` via an Algolia rule will _not_ be injected in place of `injectionObject` or `defaultContent` content.
 
@@ -299,11 +290,8 @@ When set to `false`, content returned in `userData` via an Algolia rule will _no
 />
 ```
 
-</ParamField>
-
-<ParamField body="contentSpaces" type="integer" default={1}>
-
-Maximum: 3 // Minimum: 1
+**`contentSpaces`**
+type: `integer` default:`1` maximum: `3` minimum: `1`
 
 Compatible with the algolia-min.css theme.
 
@@ -315,5 +303,3 @@ When set to 2 or 3, the injected content will span the space of 2 or 3 hits resp
   contentSpaces={2}
 />
 ```
-
-</ParamField>
