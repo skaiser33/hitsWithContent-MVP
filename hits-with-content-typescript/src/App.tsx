@@ -7,7 +7,8 @@ import {
   SearchBox,
 } from 'react-instantsearch';
 import algoliasearch from 'algoliasearch/lite';
-import 'instantsearch.css/themes/satellite.css';
+// import 'instantsearch.css/themes/satellite.css';
+import 'instantsearch.css/themes/algolia-min.css';
 
 import './App.css';
 import HitsWithContent from './components/HitsWithContent';
@@ -44,20 +45,6 @@ const myInjectionObject: Record<
     targetUrl: string;
   }[]
 > = {
-  // default: [
-  //   {
-  //     contentId: 'default-04',
-  //     position: 4,
-  //     imageUrl: '../../../images/test-image-c.png',
-  //     targetUrl: 'https://www.algolia.com/',
-  //   },
-  //   {
-  //     contentId: 'default-02',
-  //     position: 2,
-  //     imageUrl: '../../../images/test-image-a.png',
-  //     targetUrl: 'https://www.algolia.com/',
-  //   },
-  // ],
   iphone: [
     {
       contentId: 'iphone-01',
@@ -108,6 +95,7 @@ function App() {
               defaultContent={myDefaultContent}
               injectionObject={myInjectionObject}
               ruleOverride={true}
+              contentSpaces={1}
             />
             <div className='pagination'>
               <Pagination />

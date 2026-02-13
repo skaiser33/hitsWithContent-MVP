@@ -5,7 +5,7 @@ import Banner from './Banner';
 import normalizePositions from '../logic/normalizePositions';
 
 type HitsWithContentProps = {
-  defaultContent: {
+  defaultContent?: {
     contentId: string;
     position: number;
     imageUrl: string;
@@ -21,12 +21,14 @@ type HitsWithContentProps = {
     }[]
   >;
   ruleOverride?: boolean;
+  contentSpaces?: 1 | 2 | 3;
 };
 
 export default function HitsWithContent({
   defaultContent,
   injectionObject,
   ruleOverride = true,
+  contentSpaces = 1, // Default value set to 1
 }: HitsWithContentProps) {
   const { items } = useHits();
   const { currentRefinement: currentPage } = usePagination();
@@ -70,7 +72,16 @@ export default function HitsWithContent({
   const contentArray =
     normalizedInjectionArray.map((item) => (
       <a key={item.contentId} href={item.targetUrl} rel='noopener noreferrer'>
-        <img src={item.imageUrl} />
+        <img
+          src={item.imageUrl}
+          style={{
+            height: '100%',
+            width: '100%',
+            objectFit: 'cover',
+            display: 'block',
+            margin: '0 auto',
+          }}
+        />
       </a>
     )) ?? [];
 
@@ -83,7 +94,17 @@ export default function HitsWithContent({
     const bannerId = '0';
 
     interleaved.push(
-      <li key={bannerKey} className='ais-Hits-item'>
+      <li
+        key={bannerKey}
+        className='ais-Injection-item'
+        style={{
+          width: `calc(${25 * contentSpaces}% - 1rem)`,
+          height: '150px',
+          overflow: 'hidden',
+          display: 'flex',
+          alignItems: 'center',
+        }}
+      >
         <Banner id={bannerId}>{contentArray.shift()}</Banner>
       </li>
     );
@@ -100,7 +121,17 @@ export default function HitsWithContent({
       const bannerKey = `banner-p${currentPage}-pos${position}`;
 
       interleaved.push(
-        <li key={bannerKey} className='ais-Hits-item'>
+        <li
+          key={bannerKey}
+          className='ais-Injection-item'
+          style={{
+            width: `calc(${25 * contentSpaces}% - 1rem)`, // Adjust span based on contentSpaces
+            height: '150px',
+            overflow: 'hidden',
+            display: 'flex',
+            alignItems: 'center',
+          }}
+        >
           <Banner id={`banner-${position}`}>{contentArray.shift()}</Banner>
         </li>
       );
