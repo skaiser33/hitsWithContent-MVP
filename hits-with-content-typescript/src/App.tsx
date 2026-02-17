@@ -26,13 +26,13 @@ const myDefaultContent: {
   {
     contentId: 'default-04',
     position: 4,
-    imageUrl: '../../../images/test-image-c.png',
+    imageUrl: 'https://i.imgur.com/lI8Ok1G.jpg',
     targetUrl: 'https://www.algolia.com/',
   },
   {
     contentId: 'default-02',
     position: 2,
-    imageUrl: '../../../images/test-image-a.png',
+    imageUrl: 'https://i.imgur.com/euYf0qT.jpg',
     targetUrl: 'https://www.algolia.com/',
   },
 ];
@@ -49,13 +49,13 @@ const myInjectionObject: Record<
     {
       contentId: 'iphone-01',
       position: 3,
-      imageUrl: '../../../images/test-image-a.png',
+      imageUrl: 'https://i.imgur.com/euYf0qT.jpg',
       targetUrl: 'https://www.algolia.com/',
     },
     {
       contentId: 'iphone-02',
       position: 2,
-      imageUrl: '../../../images/test-image-b.png',
+      imageUrl: 'https://i.imgur.com/WghhpIL.jpg',
       targetUrl: 'https://www.algolia.com/',
     },
   ],
@@ -63,7 +63,7 @@ const myInjectionObject: Record<
     {
       contentId: 'samsung-01',
       position: 4,
-      imageUrl: '../../../images/test-image-b.png',
+      imageUrl: 'https://i.imgur.com/WghhpIL.jpg',
       targetUrl: 'https://www.google.com/',
     },
   ],
