@@ -1,4 +1,4 @@
-import { useHits, usePagination, useInstantSearch } from 'react-instantsearch';
+import { useHits, useInstantSearch } from 'react-instantsearch';
 
 import Hit from './Hit';
 import Banner from './Banner';
@@ -29,7 +29,6 @@ type HitsWithContentProps = {
  */
 function useUserData() {
   const { results } = useInstantSearch();
-
   return results?.userData ?? [];
 }
 
@@ -40,9 +39,7 @@ export default function HitsWithContent({
   contentSpaces = 1, // Default value set to 1
 }: HitsWithContentProps) {
   const { items } = useHits();
-  const { currentRefinement: currentPage } = usePagination();
-  const { indexUiState } = useInstantSearch(); // add uiState if you want to inspect hitsPerPage, etc.
-
+  const { indexUiState, results } = useInstantSearch(); // add uiState if you want to inspect hitsPerPage, etc.
   /**
    * Normalizes userQuery for matching against injectionObject.
    */
@@ -90,7 +87,7 @@ export default function HitsWithContent({
 
   // handles edge case where positions contains a 0
   if (insertionAfter.has(0)) {
-    const bannerKey = `banner-p${currentPage}-pos${0}`;
+    const bannerKey = `banner-p${results.page}-pos${0}`;
     const bannerId = '0';
 
     interleaved.push(
@@ -118,7 +115,7 @@ export default function HitsWithContent({
 
     const position = idx + 1;
     if (insertionAfter.has(position)) {
-      const bannerKey = `banner-p${currentPage}-pos${position}`;
+      const bannerKey = `banner-p${results.page}-pos${position}`;
 
       interleaved.push(
         <li
