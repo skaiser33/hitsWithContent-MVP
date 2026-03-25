@@ -24,6 +24,15 @@ type HitsWithContentProps = {
   contentSpaces?: 1 | 2 | 3;
 };
 
+/**
+ * Detects userData returned from Rule.
+ */
+function useUserData() {
+  const { results } = useInstantSearch();
+
+  return results?.userData ?? [];
+}
+
 export default function HitsWithContent({
   defaultContent,
   injectionObject,
@@ -39,15 +48,6 @@ export default function HitsWithContent({
    */
   const userQuery: string = (indexUiState.query ?? '').toLowerCase();
 
-  /**
-   * Detects userData returned from Rule.
-   */
-  function useUserData() {
-    const { results } = useInstantSearch();
-
-    return results?.userData ?? [];
-  }
-
   const userData = useUserData();
 
   // TODO: WHAT VALIDATION STEPS DO WE NEED HERE FOR THE USERDATA? AND HOW DO WE COMMUNICATE THEM TO THE CUSTOMER?
@@ -62,11 +62,11 @@ export default function HitsWithContent({
       : normalizePositions(
           injectionObject?.[userQuery as keyof typeof injectionObject]
             ? injectionObject?.[userQuery as keyof typeof injectionObject]
-            : defaultContent ?? []
+            : (defaultContent ?? []),
         );
 
   const positionsArray = normalizedInjectionArray.map(
-    (item) => item.position
+    (item) => item.position,
   ) ?? [5, 10, 15];
 
   const contentArray =
@@ -106,14 +106,14 @@ export default function HitsWithContent({
         }}
       >
         <Banner id={bannerId}>{contentArray.shift()}</Banner>
-      </li>
+      </li>,
     );
   }
   items.forEach((hit, idx) => {
     interleaved.push(
       <li key={hit.objectID} className='ais-Hits-item'>
         <Hit hit={hit} />
-      </li>
+      </li>,
     );
 
     const position = idx + 1;
@@ -133,7 +133,7 @@ export default function HitsWithContent({
           }}
         >
           <Banner id={`banner-${position}`}>{contentArray.shift()}</Banner>
-        </li>
+        </li>,
       );
     }
   });
